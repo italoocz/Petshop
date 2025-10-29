@@ -1,5 +1,5 @@
 login = [] #
-usuarios = []
+usuarios = [[]]
 PetsCadastrados = []
 Produtos = ['Tapetes Higiênicos', 'Areia para Gatos', 'Brinquedos Interativos','Camas Confortáveis', 'Comedouros e Bebedouros Automáticos','Coleiras e Guias', 'Ração de Qualidade', 'Shampoos e Produtos de Higiene', 'Antipulgas e Carrapaticidas', 'Roupinhas e Acessórios', 'Casinhas e Tocas', 'Snacks e Petiscos', 'Caixas de Transporte', 'Fonte de Água para Gatos', 'Kit de Escovação Dental']
 PrecosProdutos = [50.00, 70.00, 85.00, 200.00, 60.00, 30.00, 100.00, 40.00, 250.00, 50.00, 80.00, 150.00, 50.00, 100.00, 40.00]
@@ -22,6 +22,23 @@ while True:
         break
 
     elif opcao == '1': # login
+        print('\nVocê já tem um login cadastrado?')
+        TemCadastro = input('Digite <s> para sim ou <n> para não: ')
+        if TemCadastro in ['n', 'N', 'não', 'Não']:
+            print('\n=== Cadastro de Novo login ===')
+            nomeLogin = input('Digite seu nome: ')
+            email = input('Digite seu e-mail: ')
+            senha = input('Digite sua senha: ')
+            ja_existe = False
+            for u in login:
+                if u[1] == email:
+                    ja_existe = True
+                    break
+            if ja_existe:
+                print('\nJá existe um usuário cadastrado com esse e-mail!')
+            else:
+                login.append([nomeLogin, email, senha])
+                print('\nCadastro realizado com sucesso! Faça login agora.\n')               
         usuario = input('Usuario: ')
         senha = input('Senha: ')
         logado = 0
@@ -144,7 +161,7 @@ while True:
 
 
         if logado == 0:
-            print('\nBem vindo cliente!\n')
+            print(f'\nBem vindo cliente {nomeLogin} !\n')
             print('1 - Comprar produtos')
             print('2 - Agendamentos')
             print('0 - Voltar\n')
@@ -245,14 +262,30 @@ while True:
 
     elif opcao == '2': # Cadastro de usuário
         print('\nCadastro de Usuário.\n')
-        nome = input('Digite seu nome:')
+        nome = input('Digite seu nome: ')
         idade = input('Digite sua data de nascimento [00/00/0000]: ')
+        while idade not in ['/']:
+            print('Data inválida ou sem ( / )')
+            idade = input('Digite o formato dessa forma [00/00/0000]: ')
         data = idade.split('/')
         dia = data[0]
         mes = data[1]
         ano = data[2]
         nacionalidade = input('Onde você nasceu?: ')
-        usuarios.append([nome, idade, nacionalidade])
+        email = input('Digite seu e-mail: ')
+        senha = input('Crie uma senha: ')
+
+        existe = False
+        for u in usuarios:
+            if u[3] == email:
+                existe = True
+                break
+                
+        if existe:
+            print('\nJá existe um usuário com esse e-mail!\n')
+        else:
+            usuarios.append([nome, idade, nacionalidade, email, senha])
+            print('\nUsuário cadastrado com sucesso!\n')
 
     elif opcao == '3': # Cadastro de Pet
         print('\nCadastro de Pet:\n')
@@ -278,7 +311,7 @@ while True:
     elif opcao == '4': # Listar Usuários e Pets
         print('\nLista de usuários e pets\n')
         for list in usuarios:
-            print(f'Nome: {list[0]} | Idade: {list[1]} | Nacionalidade: {list[2]}')
+            print(f'Nome: {list[0]} | Idade: {dia}/{mes}/{ano} | Nacionalidade: {list[2]}')
         print('\nPets Cadastrados:\n')
         for pets in PetsCadastrados:
             print(f'Nome do pet: {pets[0]} | Sexo: {pets[1]} | Idade: {pets[2]} Anos | Peso: {pets[3]} Quilos')
