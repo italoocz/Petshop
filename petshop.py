@@ -1,10 +1,10 @@
-usuarios = []
 login = [] #
+usuarios = []
 PetsCadastrados = []
 Produtos = ['Tapetes Higiênicos', 'Areia para Gatos', 'Brinquedos Interativos','Camas Confortáveis', 'Comedouros e Bebedouros Automáticos','Coleiras e Guias', 'Ração de Qualidade', 'Shampoos e Produtos de Higiene', 'Antipulgas e Carrapaticidas', 'Roupinhas e Acessórios', 'Casinhas e Tocas', 'Snacks e Petiscos', 'Caixas de Transporte', 'Fonte de Água para Gatos', 'Kit de Escovação Dental']
 PrecosProdutos = [50.00, 70.00, 85.00, 200.00, 60.00, 30.00, 100.00, 40.00, 250.00, 50.00, 80.00, 150.00, 50.00, 100.00, 40.00]
 Servicos = ['Banho Simples', 'Tosa Higiênica', 'Tosa Completa', 'Banho + Tosa Completa (Pacote)', 'Hidratação de Pelos', 'Desembolo de Pelos', 'Escovação de Dentes', 'Corte de Unhas (Avulso)']
-PrecosServicos = [] #
+PrecosServicos = [60.00, 45.00, 60.00, 80.00, 50.00, 30.00, 15.00, 25.00] 
 admin = [['admin', '12345']]
 
 while True:
@@ -38,8 +38,10 @@ while True:
             print('5 - Listar serviços')
             print('0 - Voltar\n')
             opcaoADM = input('Escolha a opção: ')
+
             if opcaoADM == '0':
                 print('\nVoltando...\n')
+
             elif opcaoADM == '1':
                 CadProduto = input('Deseja cadastrar produto ou serviço?: ')
                 while CadProduto not in ['produto', 'serviço', 'Produto', 'Serviço']:
@@ -99,6 +101,7 @@ while True:
                         PrecoServAlt = float(input('Digite o novo preço do serviço: '))
                     Servicos[indice] = NovoNomeServ
                     PrecosServicos[indice] = PrecoServAlt
+
             elif opcaoADM == '3':
                 deletar = input('Deseja deletar um produto ou serviço?: ')
                 while deletar not in ['produto', 'serviço', 'Produto', 'Serviço']:
@@ -128,18 +131,17 @@ while True:
                     Servicos.pop(indice)
                     PrecosServicos.pop(indice)
                     print(f'\nServiço {ServRemovido} removido com sucesso!')
+
             elif opcaoADM == '4':
                 print('\nListando Produtos...\n')
                 for indice in range(len(Produtos)):
                         print(f'{indice} - {Produtos[indice]} | R$ {PrecosProdutos[indice]}')
+
             elif opcaoADM == '5':
                 print('\nListando Serviços...\n')
                 for indice in range(len(Servicos)):
                         print(f'{indice} - {Servicos[indice]} | R$ {PrecosServicos[indice]}')
 
-
-            
-    
 
         if logado == 0:
             print('\nBem vindo cliente!\n')
@@ -195,13 +197,57 @@ while True:
                 print('\nCompra finalizada! Obrigado por comprar na Au Au Fofura <3\n')
             
             elif opcaoCliente == '2':
-                print('\n--- Agendamentos Disponíveis ---')
+                Agendamentos = []
+                soma = 0
+                while True:
+                    print('\n--- Agendamentos Disponíveis ---')
+                    for indice in range(len(Servicos)):
+                        print(f'{indice} - {Servicos[indice]} | R$ {PrecosServicos[indice]}')
+                    indice = int(input('\nDigite o índice do tipo de agendamento que deseja: '))
+
+                    while indice < 0 or indice >= len(Servicos): 
+                        print('Indice negativo ou inválido! Digite um índice que tenha na lista.')
+                        indice = int(input('Digite novamente: '))
+
+                    Agendamentos.append([Servicos[indice], PrecosServicos[indice]]) # Adiciona o produto e preço na sacola
+                    soma += PrecosServicos[indice]
+                    print(f'\nVocê agendou {Servicos[indice]} por R$ {PrecosServicos[indice]}')
+                    print(f'Valor total: R$ {soma}')
+                    continuar = input('\nDeseja agendar algo mais? <s/n>: ')
+                    if continuar not in ['s', 'sim', 'S', 'Sim']:
+                        break
+                print('\n--- Agendamento atual ---')
+                for i in range(len(Agendamentos)):
+                    print(f'{i} - {Agendamentos[i][0]} | R$ {Agendamentos[i][1]}')
+                print(f'\nTotal da compra: R$ {soma}')
+                RemoverAge = input('\nDeseja remover algum tipo de agendamento? <s/n>: ')
+                while RemoverAge in ['s', 'sim', 'S', 'Sim']:
+                    for i in range(len(Agendamentos)):
+                        print(f'{i} - {Agendamentos[i][0]} | R$ {Agendamentos[i][1]}')
+                    indice = int(input('\nDigite o índice do agendamento que deseja remover: '))
+                    while indice < 0 or indice >= len(Agendamentos):
+                        print('Indice inválido!')
+                        indice = int(input('Digite novamente: '))
+
+                    print(f'\nTipo {Agendamentos[indice][0]} removido!')# Remove o agendamento e atualiza o valor total
+                    soma -= Agendamentos[indice][1]
+                    Agendamentos.pop(indice)
+                    print(f'\nNovo valor total: R$ {soma}')
+                    RemoverAge = input('\nDeseja remover mais algum agendamento? <s/n>: ')
+
+                print('\n--- Pagamento ---')
+                for i in range(len(Agendamentos)):
+                    print(f'{Agendamentos[i][0]} | R$ {Agendamentos[i][1]}')
+                print(f'\nValor total a pagar: R$ {soma}')
+                formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ') # Desconto
+                print('\Agendamento finalizado! Obrigado por agendar na Au Au Fofura <3\n')
 
 
     elif opcao == '2': # Cadastro de usuário
         print('\nCadastro de Usuário.\n')
         nome = input('Digite seu nome:')
         idade = int(input('Digite sua data de nascimento [00/00/0000]: '))
+
         nacionalidade = input('Onde você nasceu?: ')
         usuarios.append([nome, idade, nacionalidade])
 
