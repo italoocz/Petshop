@@ -246,8 +246,11 @@ while True:
     elif opcao == '2': # Cadastro de usuário
         print('\nCadastro de Usuário.\n')
         nome = input('Digite seu nome:')
-        idade = int(input('Digite sua data de nascimento [00/00/0000]: '))
-
+        idade = input('Digite sua data de nascimento [00/00/0000]: ')
+        data = idade.split('/')
+        dia = data[0]
+        mes = data[1]
+        ano = data[2]
         nacionalidade = input('Onde você nasceu?: ')
         usuarios.append([nome, idade, nacionalidade])
 
