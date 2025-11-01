@@ -1,5 +1,7 @@
 usuarios = []
 PetsCadastrados = []
+GastosClientes = []
+Atendentes = []
 Produtos = ['Tapetes Higiênicos', 'Areia para Gatos', 'Brinquedos Interativos','Camas Confortáveis', 'Comedouros e Bebedouros Automáticos','Coleiras e Guias', 'Ração de Qualidade', 'Shampoos e Produtos de Higiene', 'Antipulgas e Carrapaticidas', 'Roupinhas e Acessórios', 'Casinhas e Tocas', 'Snacks e Petiscos', 'Caixas de Transporte', 'Fonte de Água para Gatos', 'Kit de Escovação Dental']
 PrecosProdutos = [50.00, 70.00, 85.00, 200.00, 60.00, 30.00, 100.00, 40.00, 250.00, 50.00, 80.00, 150.00, 50.00, 100.00, 40.00]
 Servicos = ['Banho Simples', 'Tosa Higiênica', 'Tosa Completa', 'Banho + Tosa Completa (Pacote)', 'Hidratação de Pelos', 'Desembolo de Pelos', 'Escovação de Dentes', 'Corte de Unhas (Avulso)']
@@ -67,7 +69,6 @@ while True:
                             nomeLogin = u[0]
                             break
                         else:
-                            print('\nSenha incorreta! Tente novamente.\n')
                             break
 
             if logado == 1:
@@ -89,6 +90,8 @@ while True:
             print('3 - Deletar um produto / serviço')
             print('4 - Listar produtos')
             print('5 - Listar serviços')
+            print('6 - Rank de Clientes')
+            print('7 - Rank de Funcionários')
             print('0 - Voltar\n')
             opcaoADM = input('Escolha a opção: ')
 
@@ -194,6 +197,42 @@ while True:
                 print('\nListando Serviços...\n')
                 for indice in range(len(Servicos)):
                         print(f'{indice} - {Servicos[indice]} | R$ {PrecosServicos[indice]}')
+            
+            elif opcaoADM == '6':
+                print('\n=== Rank de Clientes ===\n')
+                if len(GastosClientes) == 0:
+                    print('Nenhuma compra registrada ainda.\n')
+                else:
+                    rank = GastosClientes[:]
+                    for i in range(len(rank)):
+                        for j in range(i + 1, len(rank)):
+                            if rank[j][1] > rank[i][1]:
+                                temp = rank[i]
+                                rank[i] = rank[j]
+                                rank[j] = temp
+
+                    posicao = 1
+                    for cliente in rank:
+                        print(str(posicao) + 'º - ' + cliente[0] + ' | Total gasto: R$ ' + str(cliente[1]))
+                        posicao += 1
+            
+            elif opcaoADM == '7':
+                print('\n=== Rank de Funcionários ===\n')
+                if len(Atendentes) == 0:
+                    print('Nenhum atendimento registrado ainda.\n')
+                else:
+                    rankFunc = Atendentes[:]
+                    for i in range(len(rankFunc)):
+                        for j in range(i + 1, len(rankFunc)):
+                            if rankFunc[j][1] > rankFunc[i][1]:
+                                temp = rankFunc[i]
+                                rankFunc[i] = rankFunc[j]
+                                rankFunc[j] = temp
+
+                    posicao = 1
+                    for func in rankFunc:
+                        print(str(posicao) + 'º - ' + func[0] + ' | Atendimentos: ' + str(func[1]))
+                        posicao += 1
 
 
         if logado == 1 and tipo == 'cliente':
@@ -242,11 +281,29 @@ while True:
                     RemoverSaco = input('\nDeseja remover mais algum item? <s/n>: ')
 
                 print('\n--- Pagamento ---')
+                print(f'Nome do cliente: {nomeLogin} | E-mail: {email} | Idade: {idade}')
                 for i in range(len(sacola)):
                     print(f'{sacola[i][0]} | R$ {sacola[i][1]}')
                 print(f'\nValor total a pagar: R$ {soma}')
                 formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ') # Desconto
+                atendenteNome = input('Digite o nome do atendente que realizou o atendimento: ')
+                atende = False
+                for f in Atendentes:
+                    if f[0] == atendenteNome:
+                        f[1] = f[1] + 1
+                        atende = True
+                        break
+                if not atende:
+                    Atendentes.append([atendenteNome, 1])
                 print('\nCompra finalizada! Obrigado por comprar na Au Au Fofura <3\n')
+                achou = False
+                for g in GastosClientes:
+                    if g[0] == nomeLogin:
+                        g[1] = g[1] + soma # soma o valor da nova compra
+                        achou = True
+                        break
+                if not achou:
+                    GastosClientes.append([nomeLogin, soma]) 
             
             elif opcaoCliente == '2':
                 Agendamentos = []
@@ -288,11 +345,29 @@ while True:
                     RemoverAge = input('\nDeseja remover mais algum agendamento? <s/n>: ')
 
                 print('\n--- Pagamento ---')
+                print(f'Nome do cliente: {nomeLogin} | E-mail: {email} | Idade: {idade}')
                 for i in range(len(Agendamentos)):
                     print(f'{Agendamentos[i][0]} | R$ {Agendamentos[i][1]}')
                 print(f'\nValor total a pagar: R$ {soma}')
                 formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ') # Desconto
-                print('\Agendamento finalizado! Obrigado por agendar na Au Au Fofura <3\n')
+                atendenteNome = input('Digite o nome do atendente que realizou o atendimento: ')
+                atende = False
+                for f in Atendentes:
+                    if f[0] == atendenteNome:
+                        f[1] = f[1] + 1
+                        atende = True
+                        break
+                if not atende:
+                    Atendentes.append([atendenteNome, 1])
+                print('\nAgendamento finalizado! Obrigado por agendar na Au Au Fofura <3\n')
+                achou = False
+                for g in GastosClientes:
+                    if g[0] == nomeLogin:
+                        g[1] = g[1] + soma
+                        achou = True
+                        break
+                if not achou:
+                    GastosClientes.append([nomeLogin, soma]) 
 
 
     elif opcao == '2': # Cadastro de usuário
@@ -323,24 +398,39 @@ while True:
 
     elif opcao == '3': # Cadastro de Pet
         print('\nCadastro de Pet:\n')
-        nomePet = input('Qual o nome do seu Pet?: ')
-        sexoPet = input('Qual o sexo do seu Pet? <f/m> : ')
-        while sexoPet not in ['m', 'M', 'f', 'F']:
-            print('Valor inválido ')
-            sexoPet = input('Digite < f ou m >: ')
-        if sexoPet == 'm' or sexoPet == 'M':
-            sexoPet = 'Masculino'
+
+        if len(usuarios) == 0:
+            print('Nenhum usuário cadastrado! Cadastre um usuário antes de registrar um pet.\n')
         else:
-            sexoPet = 'Feminino'
-        idadePet = int(input('Digite quantos anos tem seu Pet: '))
-        while idadePet > 30 or idadePet < 0:
-            print('Idade negativa ou inválida!')
+            print('\nUsuários cadastrados:')
+            for i in range(len(usuarios)):
+                print(f'{i} - {usuarios[i][0]} ({usuarios[i][1]})')
+
+            donoPet = int(input('\nDigite o número do dono do pet: '))
+            while donoPet < 0 or donoPet >= len(usuarios):
+                print('Número inválido!')
+                donoPet = int(input('Digite novamente o número do dono do pet: '))
+
+            nomeDono = usuarios[donoPet][0]
+            nomePet = input('Qual o nome do seu Pet?: ')
+            sexoPet = input('Qual o sexo do seu Pet? <f/m> : ')
+            while sexoPet not in ['m', 'M', 'f', 'F']:
+                print('Valor inválido ')
+                sexoPet = input('Digite < f ou m >: ')
+            if sexoPet == 'm' or sexoPet == 'M':
+                sexoPet = 'Masculino'
+            else:
+                sexoPet = 'Feminino'
             idadePet = int(input('Digite quantos anos tem seu Pet: '))
-        quilosPet = float(input('Digite quantos quilos tem seu Pet: '))
-        while quilosPet > 155 or quilosPet < 0:
-            print('Peso negativo ou inválio!')
+            while idadePet > 30 or idadePet < 0:
+                print('Idade negativa ou inválida!')
+                idadePet = int(input('Digite quantos anos tem seu Pet: '))
             quilosPet = float(input('Digite quantos quilos tem seu Pet: '))
-        PetsCadastrados.append([nomePet, sexoPet, idadePet, quilosPet])
+            while quilosPet > 155 or quilosPet < 0:
+                print('Peso negativo ou inválio!')
+                quilosPet = float(input('Digite quantos quilos tem seu Pet: '))
+            PetsCadastrados.append([nomePet, sexoPet, idadePet, quilosPet, nomeDono])
+            print(f'\nPet cadastrado com sucesso para o dono: {nomeDono}!\n')
 
     elif opcao == '4': # Listar Usuários e Pets
         print('\nLista de usuários e pets\n')
@@ -348,7 +438,7 @@ while True:
             print(f'Nome: {list[0]} | E-mail: {list[1]} | Idade: {list[3]}')
         print('\nPets Cadastrados:\n')
         for pets in PetsCadastrados:
-            print(f'Nome do pet: {pets[0]} | Sexo: {pets[1]} | Idade: {pets[2]} Anos | Peso: {pets[3]} Quilos')
+            print(f'Nome do pet: {pets[0]} | Sexo: {pets[1]} | Idade: {pets[2]} Anos | Peso: {pets[3]} Kg | Dono: {pets[4]}')
 
     
     else:
