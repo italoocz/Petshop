@@ -2,6 +2,7 @@ usuarios = []
 PetsCadastrados = []
 GastosClientes = []
 Atendentes = []
+Brindes = ['Boneco de pelucia', 'Adesivo Au Au Fofura', 'Mini Kit Shampoo', 'Chaveiro do seu pet', 'Sachê de molho especial', 'Coleira pequena']
 Produtos = ['Tapetes Higiênicos', 'Areia para Gatos', 'Brinquedos Interativos','Camas Confortáveis', 'Comedouros e Bebedouros Automáticos','Coleiras e Guias', 'Ração de Qualidade', 'Shampoos e Produtos de Higiene', 'Antipulgas e Carrapaticidas', 'Roupinhas e Acessórios', 'Casinhas e Tocas', 'Snacks e Petiscos', 'Caixas de Transporte', 'Fonte de Água para Gatos', 'Kit de Escovação Dental']
 PrecosProdutos = [50.00, 70.00, 85.00, 200.00, 60.00, 30.00, 100.00, 40.00, 250.00, 50.00, 80.00, 150.00, 50.00, 100.00, 40.00]
 Servicos = ['Banho Simples', 'Tosa Higiênica', 'Tosa Completa', 'Banho + Tosa Completa (Pacote)', 'Hidratação de Pelos', 'Desembolo de Pelos', 'Escovação de Dentes', 'Corte de Unhas (Avulso)']
@@ -39,12 +40,12 @@ while True:
             ano = data[2]
 
             senha = input('Crie sua senha: ')
-            ja_existe = False
+            TemEmail = False
             for u in usuarios:
                 if u[1] == email:
-                    ja_existe = True
+                    TemEmail = True
                     break
-            if ja_existe:
+            if TemEmail:
                 print('\nJá existe um usuário cadastrado com esse e-mail!')
             else:
                 usuarios.append([nomeLogin, email, senha, idade])
@@ -203,16 +204,15 @@ while True:
                 if len(GastosClientes) == 0:
                     print('Nenhuma compra registrada ainda.\n')
                 else:
-                    rank = GastosClientes[:]
-                    for i in range(len(rank)):
-                        for j in range(i + 1, len(rank)):
-                            if rank[j][1] > rank[i][1]:
-                                temp = rank[i]
-                                rank[i] = rank[j]
-                                rank[j] = temp
+                    for i in range(len(GastosClientes)):
+                        for j in range(i + 1, len(GastosClientes)):
+                            if GastosClientes[j][1] > GastosClientes[i][1]:
+                                troca = GastosClientes[i]
+                                GastosClientes[i] = GastosClientes[j]
+                                GastosClientes[j] = troca
 
                     posicao = 1
-                    for cliente in rank:
+                    for cliente in GastosClientes:
                         print(str(posicao) + 'º - ' + cliente[0] + ' | Total gasto: R$ ' + str(cliente[1]))
                         posicao += 1
             
@@ -221,16 +221,15 @@ while True:
                 if len(Atendentes) == 0:
                     print('Nenhum atendimento registrado ainda.\n')
                 else:
-                    rankFunc = Atendentes[:]
-                    for i in range(len(rankFunc)):
-                        for j in range(i + 1, len(rankFunc)):
-                            if rankFunc[j][1] > rankFunc[i][1]:
-                                temp = rankFunc[i]
-                                rankFunc[i] = rankFunc[j]
-                                rankFunc[j] = temp
+                    for i in range(len(Atendentes)):
+                        for j in range(i + 1, len(Atendentes)):
+                            if Atendentes[j][1] > Atendentes[i][1]:
+                                troca = Atendentes[i]
+                                Atendentes[i] = Atendentes[j]
+                                Atendentes[j] = troca
 
                     posicao = 1
-                    for func in rankFunc:
+                    for func in Atendentes:
                         print(str(posicao) + 'º - ' + func[0] + ' | Atendimentos: ' + str(func[1]))
                         posicao += 1
 
@@ -284,8 +283,12 @@ while True:
                 print(f'Nome do cliente: {nomeLogin} | E-mail: {email} | Idade: {idade}')
                 for i in range(len(sacola)):
                     print(f'{sacola[i][0]} | R$ {sacola[i][1]}')
+                if soma > 250: # Desconto
+                    print('\nParabens! Por sua compra ultrapassar o valor de R$ 250,00 você ganhou um desconto de 15%')
+                    desconto = soma * 0.15
+                    soma = soma - desconto
                 print(f'\nValor total a pagar: R$ {soma}')
-                formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ') # Desconto
+                formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ')
                 atendenteNome = input('Digite o nome do atendente que realizou o atendimento: ')
                 atende = False
                 for f in Atendentes:
@@ -296,6 +299,18 @@ while True:
                 if not atende:
                     Atendentes.append([atendenteNome, 1])
                 print('\nCompra finalizada! Obrigado por comprar na Au Au Fofura <3\n')
+                if soma >= 200:
+                    print('\nParabéns! Você ganhou um brinde especial da Au Au Fofura!')
+                    print('Brindes disponíveis:')
+                    for i in range(len(Brindes)):
+                        print(f'{i + 1} - {Brindes[i]}')
+                    indice = input('Escolha o número do brinde que deseja: ')
+                    while indice < '1' or indice > str(len(Brindes)):
+                        print('Opção inválida!')
+                        indice = input('Escolha o número do brinde que deseja: ')
+                    print(f'\nVocê escolheu o brinde: {Brindes[int(indice) - 1]} 🎉\n')
+                else:
+                    print('\nContinue comprando para ganhar brindes especiais 🎁\n')
                 achou = False
                 for g in GastosClientes:
                     if g[0] == nomeLogin:
@@ -348,6 +363,10 @@ while True:
                 print(f'Nome do cliente: {nomeLogin} | E-mail: {email} | Idade: {idade}')
                 for i in range(len(Agendamentos)):
                     print(f'{Agendamentos[i][0]} | R$ {Agendamentos[i][1]}')
+                if soma > 250: # Desconto
+                    print('\nParabens! Por seu agendamento ultrapassar o valor de R$ 250,00 você ganhou um desconto de 20%')
+                    desconto = soma * 0.20
+                    soma = soma - desconto
                 print(f'\nValor total a pagar: R$ {soma}')
                 formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ') # Desconto
                 atendenteNome = input('Digite o nome do atendente que realizou o atendimento: ')
@@ -360,13 +379,13 @@ while True:
                 if not atende:
                     Atendentes.append([atendenteNome, 1])
                 print('\nAgendamento finalizado! Obrigado por agendar na Au Au Fofura <3\n')
-                achou = False
+                gastos = False
                 for g in GastosClientes:
                     if g[0] == nomeLogin:
                         g[1] = g[1] + soma
-                        achou = True
+                        gastos = True
                         break
-                if not achou:
+                if not gastos:
                     GastosClientes.append([nomeLogin, soma]) 
 
 
@@ -384,13 +403,13 @@ while True:
         ano = data[2]
         senha = input('Crie uma senha: ')
 
-        existe = False
+        verifica = False
         for u in usuarios:
             if u[1] == email:
-                existe = True
+                verifica = True
                 break
                 
-        if existe:
+        if verifica:
             print('\nJá existe um usuário com esse e-mail!\n')
         else:
             usuarios.append([nomeLogin, email, senha, idade])
