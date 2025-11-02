@@ -30,16 +30,28 @@ while True:
             print('\n=== Cadastro de Novo login ===')
             nomeLogin = input('Digite seu nome: ')
             email = input('Digite seu e-mail: ')
+            while '@' not in email:
+                print('Email inválido coloque um "@"')
+                email = input('Digite seu e-mail: ')
             idade = input('Digite sua data de nascimento [00/00/0000]: ')
             while '/' not in idade or len(idade) != 10:
-                print('Data inválida ou sem ( / )')
+                print('\nData inválida ou sem ( / )')
                 idade = input('Digite o formato dessa forma [00/00/0000]: ')
             data = idade.split('/')
-            dia = data[0]
-            mes = data[1]
-            ano = data[2]
-
+            dia = int(data[0])
+            mes = int(data[1])
+            ano = int(data[2])
+            while dia < 1 or dia > 31 or mes < 1 or mes > 12 or ano < 1900 or ano > 2025:
+                print('\nDia, mês ou ano inválidos!')
+                idade = input('Digite o formato dessa forma [00/00/0000]: ')
+                data = idade.split('/')
+                dia = int(data[0])
+                mes = int(data[1])
+                ano = int(data[2])
             senha = input('Crie sua senha: ')
+            while len(senha) < 4:
+                print('Senha inválida, digite com mais caracteres!')
+                senha = input('Crie sua senha: ')
             TemEmail = False
             for u in usuarios:
                 if u[1] == email:
@@ -49,19 +61,18 @@ while True:
                 print('\nJá existe um usuário cadastrado com esse e-mail!')
             else:
                 usuarios.append([nomeLogin, email, senha, idade])
-                print('\nCadastro realizado com sucesso! Faça login agora.\n')               
+                print('\nCadastro realizado com sucesso! Faça login agora.\n')         
+
         while True:
             usuario = input('Usuário (nome ou e-mail): ')
             senha = input('Senha: ')
             logado = 0
             tipo = 'cliente'
-
             for i in admin: # Verifica se é admin
                 if i[0] == usuario and i[1] == senha:
                     logado = 1
                     tipo = 'admin'
                     break
-
             if logado == 0: # Verifica se é usuário comum
                 for u in usuarios:
                     if (u[0] == usuario or u[1] == usuario):
@@ -227,7 +238,6 @@ while True:
                                 troca = Atendentes[i]
                                 Atendentes[i] = Atendentes[j]
                                 Atendentes[j] = troca
-
                     posicao = 1
                     for func in Atendentes:
                         print(str(posicao) + 'º - ' + func[0] + ' | Atendimentos: ' + str(func[1]))
@@ -413,16 +423,31 @@ while True:
         print('\nCadastro de Usuário.\n')
         nomeLogin = input('Digite seu nome: ')
         email = input('Digite seu e-mail: ')
+        while '@' not in email:
+            print('Email inválido coloque um "@"')
+            email = input('Digite seu e-mail: ')
         idade = input('Digite sua data de nascimento [00/00/0000]: ')
         while '/' not in idade or len(idade) != 10:
             print('Data inválida ou sem ( / )')
             idade = input('Digite o formato dessa forma [00/00/0000]: ')
-        data = idade.split('/')
-        dia = data[0]
-        mes = data[1]
-        ano = data[2]
+            while '/' not in idade or len(idade) != 10:
+                print('\nData inválida ou sem ( / )')
+                idade = input('Digite o formato dessa forma [00/00/0000]: ')
+            data = idade.split('/')
+            dia = int(data[0])
+            mes = int(data[1])
+            ano = int(data[2])
+            while dia < 1 or dia > 31 or mes < 1 or mes > 12 or ano < 1900 or ano > 2025:
+                print('\nDia, mês ou ano inválidos!')
+                idade = input('Digite o formato dessa forma [00/00/0000]: ')
+                data = idade.split('/')
+                dia = int(data[0])
+                mes = int(data[1])
+                ano = int(data[2])
         senha = input('Crie uma senha: ')
-
+        while len(senha) < 4:
+            print('Senha inválida, digite com mais caracteres!')
+            senha = input('Crie sua senha: ')
         verifica = False
         for u in usuarios:
             if u[1] == email:
