@@ -308,9 +308,9 @@ while True:
                     while indice < '1' or indice > str(len(Brindes)):
                         print('Opção inválida!')
                         indice = input('Escolha o número do brinde que deseja: ')
-                    print(f'\nVocê escolheu o brinde: {Brindes[int(indice) - 1]} 🎉\n')
+                    print(f'\nVocê escolheu o brinde: {Brindes[int(indice) - 1]} \n')
                 else:
-                    print('\nContinue comprando para ganhar brindes especiais 🎁\n')
+                    print('\nContinue comprando para ganhar brindes especiais \n')
                 achou = False
                 for g in GastosClientes:
                     if g[0] == nomeLogin:
@@ -379,6 +379,18 @@ while True:
                 if not atende:
                     Atendentes.append([atendenteNome, 1])
                 print('\nAgendamento finalizado! Obrigado por agendar na Au Au Fofura <3\n')
+                if soma >= 200:
+                    print('\nParabéns! Você ganhou um brinde especial da Au Au Fofura!')
+                    print('Brindes disponíveis:')
+                    for i in range(len(Brindes)):
+                        print(f'{i + 1} - {Brindes[i]}')
+                    indice = input('Escolha o número do brinde que deseja: ')
+                    while indice < '1' or indice > str(len(Brindes)):
+                        print('Opção inválida!')
+                        indice = input('Escolha o número do brinde que deseja: ')
+                    print(f'\nVocê escolheu o brinde: {Brindes[int(indice) - 1]} \n')
+                else:
+                    print('\nContinue comprando para ganhar brindes especiais \n')
                 gastos = False
                 for g in GastosClientes:
                     if g[0] == nomeLogin:
@@ -455,9 +467,12 @@ while True:
         print('\nLista de usuários e pets\n')
         for list in usuarios:
             print(f'Nome: {list[0]} | E-mail: {list[1]} | Idade: {list[3]}')
-        print('\nPets Cadastrados:\n')
-        for pets in PetsCadastrados:
-            print(f'Nome do pet: {pets[0]} | Sexo: {pets[1]} | Idade: {pets[2]} Anos | Peso: {pets[3]} Kg | Dono: {pets[4]}')
+        if len(PetsCadastrados) == 0:
+            print('\nNenhum pet cadastrado ainda.\n')
+        else:
+            print('\nPets Cadastrados:\n')
+            for pets in PetsCadastrados:
+                print(f'Nome do pet: {pets[0]} | Sexo: {pets[1]} | Idade: {pets[2]} Anos | Peso: {pets[3]} Kg | Dono: {pets[4]}')
 
     
     else:
