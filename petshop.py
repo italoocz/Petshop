@@ -245,7 +245,7 @@ while True:
                 sacola = []
                 soma = 0
                 while True:
-                    print('\n--- Produtos Disponíveis ---')
+                    print('\n--- Produtos Disponíveis ---') #Comprar Produtos
                     for indice in range(len(Produtos)):
                         print(f'{indice} - {Produtos[indice]} | R$ {PrecosProdutos[indice]}')
                     indice = int(input('\nDigite o índice do produto que deseja comprar: '))
@@ -320,8 +320,9 @@ while True:
                 if not achou:
                     GastosClientes.append([nomeLogin, soma]) 
             
-            elif opcaoCliente == '2':
+            elif opcaoCliente == '2': #Agendamentos
                 Agendamentos = []
+                Horarios = ['12:00', '14:00', '16:00']
                 soma = 0
                 while True:
                     print('\n--- Agendamentos Disponíveis ---')
@@ -333,9 +334,16 @@ while True:
                         print('Indice negativo ou inválido! Digite um índice que tenha na lista.')
                         indice = int(input('Digite novamente: '))
 
+                    print(f'\nHorários disponíveis para "{Servicos[indice]}":')
+                    for hora in range(len(Horarios)):
+                        print(f'{hora} - {Horarios[hora]}')
+                    EscolherHora = int(input('Escolha o índice do horário desejado: '))
+                    while EscolherHora < 0 or EscolherHora >= len(Horarios):
+                        print('Índice de horário inválido!')
+                        EscolherHora = int(input('Escolha o índice do horário desejado: '))
                     Agendamentos.append([Servicos[indice], PrecosServicos[indice]]) # Adiciona o produto e preço na sacola
                     soma += PrecosServicos[indice]
-                    print(f'\nVocê agendou {Servicos[indice]} por R$ {PrecosServicos[indice]}')
+                    print(f'\nVocê agendou {Servicos[indice]} às {Horarios[EscolherHora]} da tarde por R$ {PrecosServicos[indice]}')
                     print(f'Valor total: R$ {soma}')
                     continuar = input('\nDeseja agendar algo mais? <s/n>: ')
                     if continuar not in ['s', 'sim', 'S', 'Sim']:
@@ -362,7 +370,7 @@ while True:
                 print('\n--- Pagamento ---')
                 print(f'Nome do cliente: {nomeLogin} | E-mail: {email} | Idade: {idade}')
                 for i in range(len(Agendamentos)):
-                    print(f'{Agendamentos[i][0]} | R$ {Agendamentos[i][1]}')
+                    print(f'{Agendamentos[i][0]}| Hora: {Horarios[EscolherHora]} | R$ {Agendamentos[i][1]}')
                 if soma > 250: # Desconto
                     print('\nParabens! Por seu agendamento ultrapassar o valor de R$ 250,00 você ganhou um desconto de 20%')
                     desconto = soma * 0.20
