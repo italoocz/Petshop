@@ -1,4 +1,4 @@
-usuarios = []
+usuarios = [['usuario', 'usuario@gmail', '12345','20/11/2004']]
 PetsCadastrados = []
 GastosClientes = []
 Atendentes = []
@@ -8,6 +8,7 @@ PrecosProdutos = [50.00, 70.00, 85.00, 200.00, 60.00, 30.00, 100.00, 40.00, 250.
 Servicos = ['Banho Simples', 'Tosa Higiênica', 'Tosa Completa', 'Banho + Tosa Completa (Pacote)', 'Hidratação de Pelos', 'Desembolo de Pelos', 'Escovação de Dentes', 'Corte de Unhas (Avulso)']
 PrecosServicos = [60.00, 45.00, 60.00, 80.00, 50.00, 30.00, 15.00, 25.00] 
 admin = [['admin', '12345']]
+email = ''
 
 while True:
     print("\n===== Au Au Fofura =====")
@@ -28,46 +29,68 @@ while True:
         TemCadastro = input('Digite <s> para sim ou <n> para não: ')
         if TemCadastro in ['n', 'N', 'não', 'Não']:
             print('\n=== Cadastro de Novo login ===')
-            nomeLogin = input('Digite seu nome: ')
-            email = input('Digite seu e-mail: ')
-            while '@' not in email:
-                print('Email inválido coloque um "@"')
+            TipoCadastro = input('Você quer cadastrar um < Usuario > ou < Admin >? : ')
+            while TipoCadastro.lower() not in ['cliente', 'admin']:
+                print('Tipo inválido! Digite apenas "cliente" ou "admin".')
+            if TipoCadastro == 'cliente':
+                nomeLogin = input('Digite seu nome: ')
                 email = input('Digite seu e-mail: ')
-            idade = input('Digite sua data de nascimento [00/00/0000]: ')
-            while '/' not in idade or len(idade) != 10:
-                print('\nData inválida ou sem ( / )')
-                idade = input('Digite o formato dessa forma [00/00/0000]: ')
-            data = idade.split('/')
-            dia = int(data[0])
-            mes = int(data[1])
-            ano = int(data[2])
-            while dia < 1 or dia > 31 or mes < 1 or mes > 12 or ano < 1900 or ano > 2025:
-                print('\nDia, mês ou ano inválidos!')
-                idade = input('Digite o formato dessa forma [00/00/0000]: ')
+                while '@' not in email:
+                    print('Email inválido coloque um "@"')
+                    email = input('Digite seu e-mail: ')
+                idade = input('Digite sua data de nascimento [00/00/0000]: ')
+                while '/' not in idade or len(idade) != 10:
+                    print('\nData inválida ou sem ( / )')
+                    idade = input('Digite o formato dessa forma [00/00/0000]: ')
                 data = idade.split('/')
                 dia = int(data[0])
                 mes = int(data[1])
                 ano = int(data[2])
-            senha = input('Crie sua senha: ')
-            while len(senha) < 4:
-                print('Senha inválida, digite com mais caracteres!')
+                while dia < 1 or dia > 31 or mes < 1 or mes > 12 or ano < 1900 or ano > 2025:
+                    print('\nDia, mês ou ano inválidos!')
+                    idade = input('Digite o formato dessa forma [00/00/0000]: ')
+                    while '/' not in idade or len(idade) != 10:
+                        print('\nData inválida ou sem ( / )')
+                        idade = input('Digite o formato dessa forma [00/00/0000]: ')
+                    data = idade.split('/')
+                    dia = int(data[0])
+                    mes = int(data[1])
+                    ano = int(data[2])
                 senha = input('Crie sua senha: ')
-            TemEmail = False
-            for u in usuarios:
-                if u[1] == email:
-                    TemEmail = True
-                    break
-            if TemEmail:
-                print('\nJá existe um usuário cadastrado com esse e-mail!')
+                while len(senha) < 4:
+                    print('Senha inválida, digite com mais caracteres!')
+                    senha = input('Crie sua senha: ')
+                TemEmail = 0
+                for u in usuarios:
+                    if u[1] == email:
+                        TemEmail = 1
+                if TemEmail == 1:
+                    print('\nJá existe um usuário cadastrado com esse e-mail!')
+                else:
+                    usuarios.append([nomeLogin, email, senha, idade])
+                    print('\nCadastro realizado com sucesso! Faça login agora.\n')
             else:
-                usuarios.append([nomeLogin, email, senha, idade])
-                print('\nCadastro realizado com sucesso! Faça login agora.\n')         
-
+                nomeAdmin = input('Digite o nome do administrador: ')
+                senhaAdmin = input('Crie sua senha: ')
+                while len(senhaAdmin) < 4:
+                    print('Senha inválida, digite com mais caracteres!')
+                    senhaAdmin = input('Crie sua senha: ')
+                TemAdmin = 0
+                for a in admin:
+                    if a[0] == nomeAdmin:
+                        TemAdmin = 1
+                if TemAdmin == 1:
+                    print('\nJá existe um administrador com esse nome!')
+                else:
+                    admin.append([nomeAdmin, senhaAdmin])
+                    print('\nAdministrador cadastrado com sucesso! Faça login agora.\n')      
+        
         while True:
             usuario = input('Usuário (nome ou e-mail): ')
             senha = input('Senha: ')
             logado = 0
             tipo = 'cliente'
+            UsuarioConectado = []
             for i in admin: # Verifica se é admin
                 if i[0] == usuario and i[1] == senha:
                     logado = 1
@@ -75,19 +98,20 @@ while True:
                     break
             if logado == 0: # Verifica se é usuário comum
                 for u in usuarios:
-                    if (u[0] == usuario or u[1] == usuario):
+                    if u[0] == usuario or u[1] == usuario:
                         if u[2] == senha:
                             logado = 1
-                            nomeLogin = u[0]
+                            UsuarioConectado = u
                             break
                         else:
+                            print('\nSenha incorreta! Tente novamente.\n')
                             break
 
             if logado == 1:
                 if tipo == 'admin':
                     print('\nLogin realizado como ADMIN!\n')
                 else:
-                    print(f'\nLogin realizado com sucesso! Bem-vindo, {nomeLogin}!\n')
+                    print(f'\nLogin realizado com sucesso! Bem-vindo, {UsuarioConectado[0]}!\n')
                 break
             else:
                 print('\nUsuário não encontrado ou senha incorreta.')
@@ -290,7 +314,7 @@ while True:
                     RemoverSaco = input('\nDeseja remover mais algum item? <s/n>: ')
 
                 print('\n--- Pagamento ---')
-                print(f'Nome do cliente: {nomeLogin} | E-mail: {email} | Idade: {idade}')
+                print(f'Nome do cliente: {UsuarioConectado[0]} | E-mail: {UsuarioConectado[1]} | Idade: {UsuarioConectado[3]}')
                 for i in range(len(sacola)):
                     print(f'{sacola[i][0]} | R$ {sacola[i][1]}')
                 if soma > 250: # Desconto
@@ -300,13 +324,13 @@ while True:
                 print(f'\nValor total a pagar: R$ {soma}')
                 formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ')
                 atendenteNome = input('Digite o nome do atendente que realizou o atendimento: ')
-                atende = False
+                atende = 0
                 for f in Atendentes:
                     if f[0] == atendenteNome:
                         f[1] = f[1] + 1
-                        atende = True
+                        atende = 1
                         break
-                if not atende:
+                if atende != 1:
                     Atendentes.append([atendenteNome, 1])
                 print('\nCompra finalizada! Obrigado por comprar na Au Au Fofura <3\n')
                 if soma >= 200:
@@ -321,14 +345,14 @@ while True:
                     print(f'\nVocê escolheu o brinde: {Brindes[int(indice) - 1]} \n')
                 else:
                     print('\nContinue comprando para ganhar brindes especiais \n')
-                achou = False
+                achou = 0
                 for g in GastosClientes:
-                    if g[0] == nomeLogin:
+                    if g[0] == UsuarioConectado[0]:
                         g[1] = g[1] + soma # soma o valor da nova compra
-                        achou = True
+                        achou = 1
                         break
-                if not achou:
-                    GastosClientes.append([nomeLogin, soma]) 
+                if achou != 1:
+                    GastosClientes.append([UsuarioConectado[0], soma]) 
             
             elif opcaoCliente == '2': #Agendamentos
                 Agendamentos = []
@@ -378,7 +402,7 @@ while True:
                     RemoverAge = input('\nDeseja remover mais algum agendamento? <s/n>: ')
 
                 print('\n--- Pagamento ---')
-                print(f'Nome do cliente: {nomeLogin} | E-mail: {email} | Idade: {idade}')
+                print(f'Nome do cliente: {UsuarioConectado[0]} | E-mail: {UsuarioConectado[1]} | Idade: {UsuarioConectado[3]}')
                 for i in range(len(Agendamentos)):
                     print(f'{Agendamentos[i][0]}| Hora: {Horarios[EscolherHora]} | R$ {Agendamentos[i][1]}')
                 if soma > 250: # Desconto
@@ -388,13 +412,13 @@ while True:
                 print(f'\nValor total a pagar: R$ {soma}')
                 formaPag = input('Qual vai ser a forma de pagamento? <Dinheiro ou Pix>: ') # Desconto
                 atendenteNome = input('Digite o nome do atendente que realizou o atendimento: ')
-                atende = False
+                atende = 0
                 for f in Atendentes:
                     if f[0] == atendenteNome:
                         f[1] = f[1] + 1
-                        atende = True
+                        atende = 1
                         break
-                if not atende:
+                if atende != 1:
                     Atendentes.append([atendenteNome, 1])
                 print('\nAgendamento finalizado! Obrigado por agendar na Au Au Fofura <3\n')
                 if soma >= 200:
@@ -409,27 +433,27 @@ while True:
                     print(f'\nVocê escolheu o brinde: {Brindes[int(indice) - 1]} \n')
                 else:
                     print('\nContinue comprando para ganhar brindes especiais \n')
-                gastos = False
+                gastos = 0
                 for g in GastosClientes:
-                    if g[0] == nomeLogin:
+                    if g[0] == UsuarioConectado[0]:
                         g[1] = g[1] + soma
-                        gastos = True
+                        gastos = 1
                         break
-                if not gastos:
-                    GastosClientes.append([nomeLogin, soma]) 
+                if gastos != 1:
+                    GastosClientes.append([UsuarioConectado[0], soma]) 
 
 
     elif opcao == '2': # Cadastro de usuário
-        print('\nCadastro de Usuário.\n')
-        nomeLogin = input('Digite seu nome: ')
-        email = input('Digite seu e-mail: ')
-        while '@' not in email:
-            print('Email inválido coloque um "@"')
+        TipoCadastro = input('Você quer cadastrar um < Usuario > ou < Admin >? : ')
+        while TipoCadastro.lower() not in ['cliente', 'admin']:
+            print('Tipo inválido! Digite apenas "cliente" ou "admin".')
+        if TipoCadastro == 'cliente':
+            nomeLogin = input('Digite seu nome: ')
             email = input('Digite seu e-mail: ')
-        idade = input('Digite sua data de nascimento [00/00/0000]: ')
-        while '/' not in idade or len(idade) != 10:
-            print('Data inválida ou sem ( / )')
-            idade = input('Digite o formato dessa forma [00/00/0000]: ')
+            while '@' not in email:
+                print('Email inválido coloque um "@"')
+                email = input('Digite seu e-mail: ')
+            idade = input('Digite sua data de nascimento [00/00/0000]: ')
             while '/' not in idade or len(idade) != 10:
                 print('\nData inválida ou sem ( / )')
                 idade = input('Digite o formato dessa forma [00/00/0000]: ')
@@ -440,25 +464,41 @@ while True:
             while dia < 1 or dia > 31 or mes < 1 or mes > 12 or ano < 1900 or ano > 2025:
                 print('\nDia, mês ou ano inválidos!')
                 idade = input('Digite o formato dessa forma [00/00/0000]: ')
+                while '/' not in idade or len(idade) != 10:
+                    print('\nData inválida ou sem ( / )')
+                    idade = input('Digite o formato dessa forma [00/00/0000]: ')
                 data = idade.split('/')
                 dia = int(data[0])
                 mes = int(data[1])
                 ano = int(data[2])
-        senha = input('Crie uma senha: ')
-        while len(senha) < 4:
-            print('Senha inválida, digite com mais caracteres!')
             senha = input('Crie sua senha: ')
-        verifica = False
-        for u in usuarios:
-            if u[1] == email:
-                verifica = True
-                break
-                
-        if verifica:
-            print('\nJá existe um usuário com esse e-mail!\n')
+            while len(senha) < 4:
+                print('Senha inválida, digite com mais caracteres!')
+                senha = input('Crie sua senha: ')
+            TemEmail = 0
+            for u in usuarios:
+                if u[1] == email:
+                    TemEmail = 1
+            if TemEmail == 1:
+                print('\nJá existe um usuário cadastrado com esse e-mail!')
+            else:
+                usuarios.append([nomeLogin, email, senha, idade])
+                print('\nCadastro realizado com sucesso! Faça login agora.\n')
         else:
-            usuarios.append([nomeLogin, email, senha, idade])
-            print('\nUsuário cadastrado com sucesso!\n')
+            nomeAdmin = input('Digite o nome do administrador: ')
+            senhaAdmin = input('Crie sua senha: ')
+            while len(senhaAdmin) < 4:
+                print('Senha inválida, digite com mais caracteres!')
+                senhaAdmin = input('Crie sua senha: ')
+            TemAdmin = 0
+            for a in admin:
+                if a[0] == nomeAdmin:
+                    TemAdmin = 1
+            if TemAdmin == 1:
+                print('\nJá existe um administrador com esse nome!')
+            else:
+                admin.append([nomeAdmin, senhaAdmin])
+                print('\nAdministrador cadastrado com sucesso! Faça login agora.\n')      
 
     elif opcao == '3': # Cadastro de Pet
         print('\nCadastro de Pet:\n')
@@ -497,15 +537,18 @@ while True:
             print(f'\nPet cadastrado com sucesso para o dono: {nomeDono}!\n')
 
     elif opcao == '4': # Listar Usuários e Pets
-        print('\nLista de usuários e pets\n')
+        print('\n---Lista de usuários e pets---\n')
         for list in usuarios:
             print(f'Nome: {list[0]} | E-mail: {list[1]} | Idade: {list[3]}')
         if len(PetsCadastrados) == 0:
-            print('\nNenhum pet cadastrado ainda.\n')
+            print('\n---Nenhum pet cadastrado ainda---\n')
         else:
-            print('\nPets Cadastrados:\n')
+            print('\n---Pets Cadastrados---\n')
             for pets in PetsCadastrados:
                 print(f'Nome do pet: {pets[0]} | Sexo: {pets[1]} | Idade: {pets[2]} Anos | Peso: {pets[3]} Kg | Dono: {pets[4]}')
+        print('\n---Lista de Admins---\n')
+        for adm in admin:
+            print(f'Nome do administrador: {adm[0]}')
 
     
     else:
