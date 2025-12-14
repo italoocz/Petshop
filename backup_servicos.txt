@@ -1,0 +1,9 @@
+Vacinação;80.0
+Banho Simples;60.0
+Tosa Higiênica;45.0
+Tosa Completa;60.0
+Banho + Tosa Completa (Pacote);80.0
+Hidratação de Pelos;50.0
+Desembolo de Pelos;30.0
+Escovação de Dentes;15.0
+Corte de Unhas (Avulso);25.0

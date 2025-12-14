@@ -1,0 +1,16 @@
+Vacina;60.0
+Tapetes Higiênicos;50.0
+Areia para Gatos;70.0
+Brinquedos Interativos;85.0
+Camas Confortáveis;200.0
+Comedouros e Bebedouros Automáticos;60.0
+Coleiras e Guias;30.0
+Ração de Qualidade;100.0
+Shampoos e Produtos de Higiene;40.0
+Antipulgas e Carrapaticidas;250.0
+Roupinhas e Acessórios;50.0
+Casinhas e Tocas;80.0
+Snacks e Petiscos;150.0
+Caixas de Transporte;50.0
+Fonte de Água para Gatos;100.0
+Kit de Escovação Dental;40.0

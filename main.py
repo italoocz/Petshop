@@ -2,6 +2,7 @@ import produtos
 import servicos
 import usuarios
 import compras
+from backup import backup_completo, importar_backup
 
 def main():
     while True:
@@ -55,6 +56,9 @@ def menu_admin():
         print('5 - Listar serviços')
         print('6 - Ranking de clientes')
         print('7 - Ranking de atendentes')
+        print('8 - Gerar backup')
+        print('9 - Importar backup')
+        print('10 - Gerar gráfico de Produtos/Serviços')
         print('0 - Voltar')
 
         opcao = input('Escolha a opção: ')
@@ -79,6 +83,15 @@ def menu_admin():
 
         elif opcao == '7':
             usuarios.mostrar_rank_atendentes()
+        
+        elif opcao == '8':
+            backup_completo()
+
+        elif opcao == '9':
+            importar_backup()
+
+        elif opcao == '10':
+            usuarios.grafico_prod_serv()
 
         elif opcao == '0':
             break

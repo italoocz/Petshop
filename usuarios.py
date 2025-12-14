@@ -1,6 +1,6 @@
 import produtos
 import servicos
-
+import matplotlib.pyplot as plt
 
 usuarios = [
     {
@@ -377,3 +377,30 @@ def mostrar_rank_atendentes():
     for a in Atendentes:
         print(str(posicao) + 'º - ' + a['nome'] + ' | Atendimentos: ' + str(a['qtd']))
         posicao += 1
+
+
+def grafico_prod_serv():
+    # ===== 5 Produtos mais caros =====
+    produtos_ordenados = sorted(produtos.produtos, key=lambda x: x['preco'], reverse=True)[:5]
+    nomes_prod = [p['nome'] for p in produtos_ordenados]
+    precos_prod = [p['preco'] for p in produtos_ordenados]
+
+    # ===== 5 Serviços mais caros =====
+    servicos_ordenados = sorted(servicos.servicos, key=lambda x: x['preco'], reverse=True)[:5]
+    nomes_serv = [s['nome'] for s in servicos_ordenados]
+    precos_serv = [s['preco'] for s in servicos_ordenados]
+
+    # ===== gráfico =====
+    plt.figure(figsize=(12, 6))
+
+    # Produtos
+    plt.bar(nomes_prod, precos_prod, color='blue', label='Produtos')
+    # Serviços
+    plt.bar(nomes_serv, precos_serv, color='red', alpha=0.7, label='Serviços')
+
+    plt.title('Top 5 Produtos e Serviços Mais Caros')
+    plt.ylabel('Preço (R$)')
+    plt.xticks(rotation=20, ha='right')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
